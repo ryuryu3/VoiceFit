@@ -1,0 +1,110 @@
+/* 운동 중 화면 — 흰 배경, 숫자와 링이 주인공 */
+.wo {
+  min-height: 100dvh; display: flex; flex-direction: column; gap: 14px;
+  padding: max(env(safe-area-inset-top), 10px) var(--gutter) calc(env(safe-area-inset-bottom) + 16px);
+  max-width: 640px; margin: 0 auto; user-select: none; -webkit-user-select: none;
+}
+.wo-head { display: flex; flex-direction: column; gap: 8px; }
+.wo-meta { font-size: 14px; color: var(--steel); }
+
+.pager { display: flex; flex-direction: column; gap: 8px; }
+.pager-view { overflow: hidden; touch-action: pan-y; border-radius: 22px; }
+.pager-track { display: flex; width: 200%; transition: transform .25s ease-out; }
+.pager-page { width: 50%; flex: none; }
+.pager-dots { display: flex; justify-content: center; gap: 8px; }
+.pager-dots button { width: 28px; height: 28px; border: 0; background: none; padding: 0; display: grid; place-items: center; }
+.pager-dots button::after { content: ''; width: 8px; height: 8px; border-radius: 4px; background: var(--line); transition: width .2s; }
+.pager-dots button[aria-selected='true']::after { width: 22px; background: var(--orange); }
+
+.wo-progress { background: var(--rubber); border-radius: 22px; padding: 18px 16px; display: flex; flex-direction: column; align-items: center; gap: 12px; min-height: 420px; }
+.wo-title { width: 100%; display: flex; flex-direction: column; align-items: center; gap: 8px; }
+.wo-title h2 { margin: 0; font-size: 24px; text-align: center; }
+.set-dots { display: flex; gap: 6px; }
+.set-dots i { width: 26px; height: 6px; border-radius: 3px; background: var(--rubber-2); }
+.set-dots i.done { background: var(--orange); }
+.set-dots i.now { background: var(--chalk); }
+
+.rep-ring { position: relative; width: min(72vw, 300px); aspect-ratio: 1; }
+.rep-ring svg { width: 100%; height: 100%; }
+.ring-track { fill: none; stroke: var(--rubber-2); stroke-width: 7; }
+.wo-mini .ring-track { stroke: var(--line); }
+.ring-fill { fill: none; stroke: var(--orange); stroke-width: 7; }
+.ring-fill.live { stroke: #ffa36f; }
+.rep-ring-center { position: absolute; inset: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; }
+.rep-num { font-size: clamp(64px, 24vw, 128px); font-weight: 800; line-height: 1; letter-spacing: -0.04em; font-variant-numeric: tabular-nums; }
+.rep-sub { font-size: 17px; color: var(--steel); font-weight: 600; margin-top: 6px; }
+
+.wo-weight { gap: 4px; font-size: 20px; font-weight: 750; }
+.wo-weight .icon-btn { background: var(--rubber-2); }
+.wo-weight span { min-width: 104px; text-align: center; }
+.wo-hint { font-size: 13px; color: var(--steel); }
+
+/* ── 모션 모드: 포즈 애니메이션 + 타이머 통합 (숫자는 그림 위가 아니라 위쪽 띠에) ── */
+.wo-motion {
+  background: var(--pose-bg); border-radius: 22px; min-height: 420px; overflow: hidden;
+  display: grid; grid-template-columns: 1fr auto; grid-template-rows: auto 1fr auto;
+  grid-template-areas: "top count" "stage stage" "bar bar"; gap: 0 8px; padding: 12px 14px 14px;
+}
+.wo-motion > .motion { grid-area: stage; padding: 4px 0; min-height: 0; }
+.mo-top { grid-area: top; display: flex; flex-direction: column; gap: 2px; color: var(--chalk); font-size: 14px; align-self: start; }
+.mo-top b { font-size: 19px; line-height: 1.25; }
+.mo-top span { color: var(--steel); font-weight: 600; }
+.mo-count { grid-area: count; display: flex; flex-direction: column; align-items: flex-end; line-height: 1; }
+.mo-big { font-size: clamp(44px, 14vw, 72px); font-weight: 800; letter-spacing: -0.03em; color: var(--chalk); font-variant-numeric: tabular-nums; }
+.mo-big small { font-size: 0.42em; color: var(--steel); font-weight: 700; margin-left: 2px; }
+.mo-cap { font-size: 13px; color: var(--steel); font-weight: 600; margin-top: 4px; }
+.wo-motion.rest .mo-big { color: var(--orange-ink); }
+.mo-bar { grid-area: bar; display: flex; gap: 3px; height: 10px; }
+.mo-bar i { flex: 1; background: rgba(255,255,255,.85); border-radius: 5px; overflow: hidden; }
+.mo-bar b { display: block; height: 100%; background: var(--orange); }
+
+.motion { position: relative; width: 100%; height: 100%; display: grid; place-items: center; padding: 16px 16px 56px; }
+.motion svg, .motion video { width: 100%; max-height: 360px; }
+.motion.has-frames { padding: 0; }
+.wo-motion .pose { max-width: min(100%, 52dvh); }
+.pose { position: relative; width: 100%; max-width: 420px; aspect-ratio: 1; margin: 0 auto; }
+.pose img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: contain; }
+.motion.compact { padding: 6px 6px 40px; }
+.motion.compact svg { max-height: 200px; }
+.motion-lock { position: absolute; bottom: 30px; left: 50%; transform: translateX(-50%); border: 0; border-radius: 999px; padding: 8px 14px; background: #fff; color: var(--orange-ink); border: 1.5px solid var(--orange); font-weight: 700; font-size: 14px; white-space: nowrap; z-index: 2; }
+.sheet .motion { background: var(--pose-bg); border-radius: 18px; min-height: 260px; }
+.sheet .motion .motion-lock { bottom: 12px; }
+
+.wo-actions { display: grid; grid-template-columns: 1fr 1.4fr; gap: 10px; }
+.wo-actions .btn { min-height: 64px; font-size: 18px; }
+.wo-actions.compact .btn { min-height: 52px; font-size: 16px; padding: 0 10px; }
+
+.wo-upcoming { list-style: none; padding: 0; margin: 0; display: flex; flex-direction: column; gap: 6px; }
+.wo-upcoming li { display: flex; align-items: center; gap: 10px; background: var(--rubber); border-radius: 14px; padding: 10px 10px 10px 14px; min-height: 56px; touch-action: manipulation; }
+.wo-upcoming li.dragging { background: var(--rubber-2); box-shadow: 0 8px 24px rgba(0,0,0,.18); position: relative; z-index: 5; }
+.wo-upcoming .chip { height: 38px; font-size: 14px; }
+
+.wo-tools { flex-wrap: wrap; gap: 8px; }
+.wo-tools .btn { min-height: 44px; font-size: 14px; padding: 0 14px; }
+
+.wo-paused { position: fixed; inset: 0; background: rgba(255,255,255,.94); z-index: 30; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 8px; }
+.wo-paused b { font-size: 34px; }
+.wo-paused span { color: var(--steel); }
+
+/* ── 미니 (플립 커버화면 등): 정보 4개, 흰 배경 + 큰 숫자 ── */
+.wo-mini { background: #fff; gap: 8px; padding: 8px 10px calc(env(safe-area-inset-bottom) + 8px); max-width: none; min-height: 100dvh; }
+.wo-mini .wo-progress { background: #fff; min-height: 0; padding: 4px; gap: 4px; }
+.wo-mini .wo-motion { background: var(--pose-bg); min-height: 70dvh; }
+.wo-mini .wo-motion { padding: 8px 10px 10px; }
+.wo-mini .mo-top b { font-size: 15px; }
+.wo-mini .mo-big { font-size: clamp(34px, 11dvh, 52px); }
+.wo-mini .mo-cap { display: none; }
+.wo-mini .mo-bar { height: 8px; }
+.wo-mini .wo-title h2 { font-size: 16px; }
+.wo-mini .set-dots i { width: 16px; height: 4px; }
+.wo-mini .rep-ring { width: min(46dvh, 70vw); }
+.wo-mini .rep-num { font-size: clamp(48px, 18dvh, 96px); color: var(--chalk); }
+.wo-mini .rep-sub { font-size: 13px; margin-top: 2px; }
+.wo-mini .pager-dots { gap: 2px; }
+.wo-mini .pager-dots button { height: 18px; }
+.wo-mini-exit { align-self: center; font-size: 13px; }
+
+/* ── 와이드 (폴드 펼침·태블릿) ── */
+.wo-wide { max-width: 1100px; }
+.wo-wide-cols { display: grid; grid-template-columns: 1.15fr 1fr; gap: 20px; align-items: start; }
+.wo-col { display: flex; flex-direction: column; gap: 12px; }
